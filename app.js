@@ -162,6 +162,7 @@ var Q = require('q'),
                 if (!mapping[type]) {
                     mapping[type] = {};
                 }
+                //@TODO: add node to a index
 
                 mapping[type][node.id] = node._id;
                 return Q(node);
@@ -179,6 +180,30 @@ var Q = require('q'),
     saveRelationship = function (from, to, type) {
         var saveRelToDb = Q.nbind(db.insertRelationship, db);
         return saveRelToDb(from, to, type, {});
+    },
+
+    /**
+     * Helper method to save a index.
+     */
+    saveIndex = function (index, cb) {
+        var saveIndexToDb = Q.nbind(db.insertNodeIndex, db);
+        return saveIndexToDb(index, cb);
+    },
+
+    /**
+     * Helper method to delete a index.
+     */
+    deleteIndex = function (index, cb) {
+        var deleteIndexFromDb = Q.nbind(db.deleteNodeIndex, db);
+        return deleteIndexFromDb(index, cb);
+    },
+
+    /**
+     * Helper method to add node to index.
+     */
+    addNodeToIndex = function (node_id, index, index_key, index_value, cb) {
+        var addNodeToIndex = Q.nbind(db.addNodeToIndex, db);
+        return addNodeToIndex(node_id, index, index_key, index_value, cb);
     },
 
     /**
